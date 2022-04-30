@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "442839834760",
+    "project_id": "gclef-21fc8",
+    "storage_bucket": "gclef-21fc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442839834760:android:a0d8582cb65d34b6a1ff3d",
+        "android_client_info": {
+          "package_name": "com.example.gclef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442839834760-j74p0m6l2illbap0fmsuv4dvamg8urgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa9vuKWv8_2OxfrgnKv4TLRyHFd25rB7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442839834760-j74p0m6l2illbap0fmsuv4dvamg8urgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
