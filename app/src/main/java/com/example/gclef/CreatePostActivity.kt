@@ -2,6 +2,7 @@ package com.example.gclef
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_create_post.*
@@ -11,8 +12,8 @@ class CreatePostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
 
-
-        //글 정보 저장 코드 구현
+        //adapter 불러와서 파이어베이스에 데이터 저장
+        val adapter = RecyclerViewAdapter()
 
 
         //사진 업로드 코드 구현
@@ -29,7 +30,21 @@ class CreatePostActivity : AppCompatActivity() {
 
         // 글쓰기 코드 구현
         postButton.setOnClickListener {
-            Toast.makeText(this, "업로드", Toast.LENGTH_LONG).show()
+            var songPost = Song()
+            songPost.songTitle = songTitlePostEditText.text.toString()
+            songPost.songDetail = songDetailPostEditText.text.toString()
+
+
+            adapter.fireStore?.collection("Post")
+                ?.document()?.set(songPost)
+                ?.addOnSuccessListener {
+                    Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                ?.addOnFailureListener { exception ->
+                    // 실패할 경우
+                    Log.w("MainActivity", "Error getting documents: $exception")
+                }
 
         }
 

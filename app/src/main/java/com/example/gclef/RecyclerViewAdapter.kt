@@ -11,11 +11,11 @@ import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var songList: ArrayList<Song> = ArrayList()
-    private var fireStore: FirebaseFirestore? = null
+    var fireStore: FirebaseFirestore? = null
 
     init {  // 파이어베이스 데이터 ArrayList에 담음
         fireStore = FirebaseFirestore.getInstance()
-        fireStore?.collection("GClef")
+        fireStore?.collection("Post")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 // ArrayList 비워줌
                 songList.clear()
