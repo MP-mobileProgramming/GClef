@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         initNavigationBar()
     }
 
+
+    //각각 해당하는 프레그먼트로 이동
     private fun initNavigationBar() {
         bottom_nav.setOnItemSelectedListener { item: MenuItem ->
             changeFragment(
