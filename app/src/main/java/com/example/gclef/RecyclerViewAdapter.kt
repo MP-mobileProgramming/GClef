@@ -15,7 +15,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {  // 파이어베이스 데이터 ArrayList에 담음
         fireStore = FirebaseFirestore.getInstance()
-        fireStore?.collection("Post")
+        fireStore?.collection("Posting")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 // ArrayList 비워줌
                 songList.clear()

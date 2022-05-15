@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import java.util.*
+import kotlin.collections.HashMap
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -16,15 +20,23 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         auth = FirebaseAuth.getInstance()
+        var firestore : FirebaseFirestore? = null
 
         signUpButton.setOnClickListener {
             val email = signEmailEditText.text.toString()
             val password = signPasswordEditText.text.toString()
+            val userName = signUserNameEditText.text.toString()
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
+
+                        var userInfo = userInfo()
+                        userInfo.uid = auth?.currentUser?.uid
+                        userInfo.userName = userName
+
+                        firestore?.collection(auth!!.currentUser!!.uid)?.document()?.set(userInfo)
                         finish()
                     }
                     else {

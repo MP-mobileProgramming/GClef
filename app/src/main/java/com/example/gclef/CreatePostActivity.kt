@@ -19,7 +19,6 @@ class CreatePostActivity : AppCompatActivity() {
         //사진 업로드 코드 구현
         imageUploadButton.setOnClickListener {
             Toast.makeText(this, "사진 업로드", Toast.LENGTH_LONG).show()
-
         }
 
 
@@ -35,7 +34,7 @@ class CreatePostActivity : AppCompatActivity() {
             songPost.songDetail = songDetailPostEditText.text.toString()
 
 
-            adapter.fireStore?.collection("Post")
+            adapter.fireStore?.collection("Posting")
                 ?.document()?.set(songPost)
                 ?.addOnSuccessListener {
                     Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()

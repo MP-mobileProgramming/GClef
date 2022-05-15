@@ -9,7 +9,6 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
-    // 전역으로 사용할 FirebaseAuth를 만들어 준다
     private lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+
                         Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
                         finish()
                     } else {
