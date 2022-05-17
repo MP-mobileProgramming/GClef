@@ -67,17 +67,6 @@
 
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/postButton"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:background="#00FFFFFF"
-            android:layout_marginRight="10dp"
-            android:padding="10dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_baseline_create_24"
-
-            />
     </LinearLayout>
 
 
