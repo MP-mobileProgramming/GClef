@@ -20,7 +20,8 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         auth = FirebaseAuth.getInstance()
-        var firestore : FirebaseFirestore? = null
+        val adapter = RecyclerViewAdapter()
+
 
         signUpButton.setOnClickListener {
             val email = signEmailEditText.text.toString()
@@ -36,7 +37,7 @@ class SignUpActivity : AppCompatActivity() {
                         userInfo.uid = auth?.currentUser?.uid
                         userInfo.userName = userName
 
-                        firestore?.collection(auth!!.currentUser!!.uid)?.document()?.set(userInfo)
+                        adapter.fireStore?.collection("User")?.document()?.set(userInfo)
                         finish()
                     }
                     else {

@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_create_post.*
 
 class CreatePostActivity : AppCompatActivity() {
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
 
         //adapter 불러와서 파이어베이스에 데이터 저장
         val adapter = RecyclerViewAdapter()
+        auth = FirebaseAuth.getInstance()
+        var currentUser = auth.currentUser
 
 
         //사진 업로드 코드 구현
@@ -32,9 +37,11 @@ class CreatePostActivity : AppCompatActivity() {
             var songPost = Song()
             songPost.songTitle = songTitlePostEditText.text.toString()
             songPost.songDetail = songDetailPostEditText.text.toString()
+            songPost.uid = currentUser?.uid
 
 
-            adapter.fireStore?.collection("Posting")
+
+            adapter.fireStore?.collection("Post")
                 ?.document()?.set(songPost)
                 ?.addOnSuccessListener {
                     Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()

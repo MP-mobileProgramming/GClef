@@ -17,14 +17,16 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="E-mail"/>
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/signPasswordEditText"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="Password"/>
+        android:hint="Password"
+        android:inputType="textPassword"/>
 
     <EditText
         android:id="@+id/signUserNameEditText"

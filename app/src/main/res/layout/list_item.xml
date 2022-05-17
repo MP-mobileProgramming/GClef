@@ -33,13 +33,22 @@
                 android:textColor="#000000"
                 android:layout_margin="10dp"/>
             <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(알 수 없음)"
+                android:textSize="20dp"
+                android:layout_margin="10dp"/>
+            <TextView
                 android:id="@+id/songDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Information.."
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:textColor="#555555"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:maxLines="1"/>
+
 
         </LinearLayout>
 

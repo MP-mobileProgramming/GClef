@@ -24,8 +24,8 @@ class LoginActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-
                         Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+
                         finish()
                     } else {
                         Toast.makeText(this, "아이디와 비밀번호를 확인 해주세요", Toast.LENGTH_SHORT).show()
