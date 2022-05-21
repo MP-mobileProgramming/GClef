@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.fragment_board.*
+import kotlinx.android.synthetic.main.list_item.*
 
 class BoardFragment : Fragment() {
     private var fireStore: FirebaseFirestore? = null
@@ -30,6 +33,18 @@ class BoardFragment : Fragment() {
         // recycler view - 파이어베이스에 있는 정보 불러옴
         recyclerView.adapter = RecyclerViewAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context?.applicationContext)
+        fireStore?.collection("Post")?.document()?.get()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                var photo = task.result?.toObject<Song>()
+                Glide.with(this)
+                    .load(photo?.imageUrl)
+                    .override(250,250)
+                    .centerCrop()
+                    .into(coverImage)
+            }
+        }
+
+
 
 
         auth = FirebaseAuth.getInstance()

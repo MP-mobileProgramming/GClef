@@ -4,12 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
-import java.util.*
-import kotlin.collections.HashMap
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -33,7 +28,7 @@ class SignUpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         Toast.makeText(this, "회원가입 성공", Toast.LENGTH_SHORT).show()
 
-                        var userInfo = userInfo()
+                        var userInfo = UserInfo()
                         userInfo.uid = auth?.currentUser?.uid
                         userInfo.userName = userName
 

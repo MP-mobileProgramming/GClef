@@ -8,17 +8,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        >
 
         <!--이미지 소스 바꾸기-->
         <ImageView
             android:id="@+id/coverImage"
             android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_weight="1"
-            android:layout_margin="10dp"
             android:src="@drawable/ic_baseline_person_24"/>
+
         <LinearLayout
+            android:layout_marginTop="20dp"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -31,14 +32,14 @@
                 android:text="Title"
                 android:textSize="25dp"
                 android:textColor="#000000"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5dp"/>
             <TextView
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(알 수 없음)"
                 android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5dp"/>
             <TextView
                 android:id="@+id/songDetail"
                 android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
                 android:text="Information.."
                 android:textSize="15dp"
                 android:textColor="#555555"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:maxLines="1"/>
 
 

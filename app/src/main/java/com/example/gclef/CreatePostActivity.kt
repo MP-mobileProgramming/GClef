@@ -43,7 +43,7 @@ class CreatePostActivity : AppCompatActivity() {
         storage = FirebaseStorage.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-
+        //https://kante-kante.tistory.com/20 참조
         //사진 업로드 코드 구현
         imageUploadButton.setOnClickListener {
             Toast.makeText(this, "사진 업로드", Toast.LENGTH_LONG).show()
@@ -51,13 +51,13 @@ class CreatePostActivity : AppCompatActivity() {
             imagePickIntent.type = "image/*"
             startActivityForResult(imagePickIntent, pickImageFromAlbum)
 
-
         }
 
 
         // 오디오 업로드 코드 구현
         songUploadButton.setOnClickListener {
             Toast.makeText(this, "노래 업로드", Toast.LENGTH_LONG).show()
+
         }
 
         // 글쓰기 코드 구현
@@ -75,8 +75,6 @@ class CreatePostActivity : AppCompatActivity() {
         if(requestCode == pickImageFromAlbum) {
             if (resultCode == Activity.RESULT_OK) {
                 selectImageUri = data?.data
-                ImageUpload(this)
-
             }
 
         }
@@ -107,6 +105,7 @@ class CreatePostActivity : AppCompatActivity() {
                 var songPost = Song()
                 songPost.songTitle = songTitlePostEditText.text.toString()
                 songPost.songDetail = songDetailPostEditText.text.toString()
+                songPost.imageUrl = selectImageUri.toString()
                 songPost.uid = currentUser?.uid
 
 
@@ -115,6 +114,7 @@ class CreatePostActivity : AppCompatActivity() {
                     ?.document()?.set(songPost)
                     ?.addOnSuccessListener {
                         Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
+                        ImageUpload(this)
                         finish()
                     }
                     ?.addOnFailureListener { exception ->

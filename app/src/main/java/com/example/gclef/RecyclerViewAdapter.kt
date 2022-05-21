@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -12,7 +13,7 @@ import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var songList: ArrayList<Song> = ArrayList()
-    private var userList: ArrayList<userInfo> = ArrayList()
+    private var userList: ArrayList<UserInfo> = ArrayList()
 
     var fireStore: FirebaseFirestore? = null
     private lateinit var auth: FirebaseAuth
@@ -41,7 +42,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
                 for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject<userInfo>()
+                    var item = snapshot.toObject<UserInfo>()
                     userList.add(item!!)
 
 
@@ -72,11 +73,18 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.songTitle.text = songList[position].songTitle
         viewHolder.songDetail.text = songList[position].songDetail
 
+
         for (i: Int in 1 until userList.size) {
             if(userList[i].uid == songList[position].uid) {
                 viewHolder.userName.text = userList[i].userName
             }
         }
+        Glide.with(viewHolder)
+            .load(songList[position].imageUrl)
+            .override(250,250)
+            .centerCrop()
+            .into(viewHolder.coverImage)
+
 
 
     }
