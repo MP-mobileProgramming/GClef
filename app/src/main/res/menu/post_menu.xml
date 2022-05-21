@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/postPIC"
+        android:id="@+id/postButton"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_assignment_24"
-        android:title="게시판"
+        android:icon="@drawable/ic_baseline_create_24"
+        android:title="글쓰기"
+        app:showAsAction="always"
         />
-    <item
-        android:id="@+id/postSong"
-        android:enabled="true"
-        android:icon="@drawable/ic_baseline_search_24"
-        android:title="검색"
-        />
+
 </menu>
