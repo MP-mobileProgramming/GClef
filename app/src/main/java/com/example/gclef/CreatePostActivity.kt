@@ -25,11 +25,16 @@ import java.util.jar.Manifest
 
 class CreatePostActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-    lateinit var storage: FirebaseStorage
+    lateinit var imageStorage: FirebaseStorage
+    lateinit var soundStorage: FirebaseStorage
     lateinit var firestore: FirebaseFirestore
     private var viewProfile : View? = null
     var pickImageFromAlbum = 0
+    var pickSoundFromFolder = 1
     var selectImageUri : Uri? = null
+    var selectSoundUri : Uri? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -40,7 +45,8 @@ class CreatePostActivity : AppCompatActivity() {
         var currentUser = auth.currentUser
 
 
-        storage = FirebaseStorage.getInstance()
+        imageStorage = FirebaseStorage.getInstance()
+        soundStorage = FirebaseStorage.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         //https://kante-kante.tistory.com/20 참조
@@ -57,7 +63,9 @@ class CreatePostActivity : AppCompatActivity() {
         // 오디오 업로드 코드 구현
         songUploadButton.setOnClickListener {
             Toast.makeText(this, "노래 업로드", Toast.LENGTH_LONG).show()
-
+            var soundPickIntent = Intent(Intent.ACTION_GET_CONTENT)
+            soundPickIntent.type = "audio/*"
+            startActivityForResult(soundPickIntent, pickSoundFromFolder)
         }
 
         // 글쓰기 코드 구현
@@ -78,15 +86,31 @@ class CreatePostActivity : AppCompatActivity() {
             }
 
         }
+        else if(requestCode == pickSoundFromFolder) {
+            if (resultCode == Activity.RESULT_OK) {
+                selectSoundUri = data?.data
+            }
+
+        }
     }
 
     private fun ImageUpload(view: CreatePostActivity) {
         var timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         var imgFileName = "IMAGE_" + timeStamp + "_png"
-        var storageRef = storage?.reference?.child("images")?.child(imgFileName)
+        var imageStorageRef = imageStorage?.reference?.child("images")?.child(imgFileName)
 
-        storageRef?.putFile(selectImageUri!!)?.addOnSuccessListener {
+        imageStorageRef?.putFile(selectImageUri!!)?.addOnSuccessListener {
             Toast.makeText(this, "이미지 업로드 완료", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun SoundUpload(view: CreatePostActivity) {
+        var timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        var soundFileName = "AUDIO_" + timeStamp + "_wav"
+        var soundStorageRef = soundStorage?.reference?.child("sounds")?.child(soundFileName)
+
+        soundStorageRef?.putFile(selectSoundUri!!)?.addOnSuccessListener {
+            Toast.makeText(this, "노래 업로드 완료", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -106,6 +130,7 @@ class CreatePostActivity : AppCompatActivity() {
                 songPost.songTitle = songTitlePostEditText.text.toString()
                 songPost.songDetail = songDetailPostEditText.text.toString()
                 songPost.imageUrl = selectImageUri.toString()
+                songPost.soundUrl = selectSoundUri.toString()
                 songPost.uid = currentUser?.uid
 
 
@@ -115,6 +140,7 @@ class CreatePostActivity : AppCompatActivity() {
                     ?.addOnSuccessListener {
                         Toast.makeText(this, "업로드 완료", Toast.LENGTH_SHORT).show()
                         ImageUpload(this)
+                        SoundUpload(this)
                         finish()
                     }
                     ?.addOnFailureListener { exception ->

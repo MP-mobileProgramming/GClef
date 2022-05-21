@@ -1,5 +1,6 @@
 package com.example.gclef
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.list_item.view.*
 import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var intent: Intent
     private var songList: ArrayList<Song> = ArrayList()
     private var userList: ArrayList<UserInfo> = ArrayList()
 
@@ -77,6 +79,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         for (i: Int in 1 until userList.size) {
             if(userList[i].uid == songList[position].uid) {
                 viewHolder.userName.text = userList[i].userName
+                songList[position].userName = userList[i].userName
             }
         }
         Glide.with(viewHolder)
@@ -84,6 +87,22 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             .override(250,250)
             .centerCrop()
             .into(viewHolder.coverImage)
+
+
+        viewHolder.setOnClickListener {
+            intent = Intent(viewHolder.context, InPostActivity::class.java)
+            intent.putExtra("data", songList[position])
+            Glide.with(viewHolder)
+                .load(songList[position].imageUrl)
+                .override(250,250)
+                .centerCrop()
+                .into(viewHolder.coverImage)
+            viewHolder.context.startActivity(intent)
+
+        }
+
+
+
 
 
 

@@ -1,10 +1,13 @@
 package com.example.gclef
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +21,8 @@ import kotlinx.android.synthetic.main.list_item.*
 class BoardFragment : Fragment() {
     private var fireStore: FirebaseFirestore? = null
     private lateinit var auth: FirebaseAuth
+    private lateinit var seekBar: SeekBar
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,16 +38,35 @@ class BoardFragment : Fragment() {
         // recycler view - 파이어베이스에 있는 정보 불러옴
         recyclerView.adapter = RecyclerViewAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context?.applicationContext)
+
+        mediaPlayer = MediaPlayer()
+        val thread = Thread()
+
+
+        var location = IntArray(2)
+        recyclerView.getLocationOnScreen(location)
+        var y = location[1]
+        Log.i("position", location[0].toString() + ", " + y.toString())
+
         fireStore?.collection("Post")?.document()?.get()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                var photo = task.result?.toObject<Song>()
+                var song = task.result?.toObject<Song>()
                 Glide.with(this)
-                    .load(photo?.imageUrl)
-                    .override(250,250)
+                    .load(song?.imageUrl)
+                    .override(250, 250)
                     .centerCrop()
                     .into(coverImage)
+                /*mediaPlayer.setDataSource(song?.soundUrl)
+                if(y < 130) {
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
+                }*/
+
             }
         }
+
+
+
 
 
 
@@ -69,6 +93,20 @@ class BoardFragment : Fragment() {
 
     }
 
+    fun Thread() {
+        val task = Runnable {
+            while (mediaPlayer.isPlaying) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+
+                    // TODO Auto-generated catch block
+                    e.printStackTrace()
+                }
+            }
+        }
+
+    }
 
 
 }
