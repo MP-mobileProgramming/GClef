@@ -7,8 +7,8 @@ import java.io.Serializable
 data class Song(var userName : String? = null,
                 var songTitle: String? = null,
                 var songDetail : String? = null,
-                var imageUrl : String = "",
-                var soundUrl : String = "",
+                var imageUrl : String? = null,
+                var soundUrl : String? = null,
                 var uid : String? = null) : Serializable {
 
                 }

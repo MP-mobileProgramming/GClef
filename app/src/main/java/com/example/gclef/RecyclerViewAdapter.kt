@@ -1,6 +1,7 @@
 package com.example.gclef
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +32,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject<Song>()
                     songList.add(item!!)
-
-
                 }
 
                 notifyDataSetChanged()
@@ -74,6 +73,8 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         viewHolder.songTitle.text = songList[position].songTitle
         viewHolder.songDetail.text = songList[position].songDetail
+
+
 
 
         for (i: Int in 1 until userList.size) {
