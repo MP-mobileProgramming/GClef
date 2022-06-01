@@ -1,3 +1,0 @@
-# GClef
-Term Project
-hello!
