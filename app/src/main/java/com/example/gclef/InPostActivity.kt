@@ -1,6 +1,5 @@
 package com.example.gclef
 
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -9,11 +8,12 @@ import android.os.Handler
 import android.util.Log
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.gms.auth.api.signin.internal.Storage
-import com.google.android.gms.tasks.Task
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.activity_in_post.*
 
 class InPostActivity : AppCompatActivity()  {
@@ -21,6 +21,7 @@ class InPostActivity : AppCompatActivity()  {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var seekBar1: SeekBar
     lateinit var runnable: Runnable
+    private lateinit var auth: FirebaseAuth
     private var handler=Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +34,7 @@ class InPostActivity : AppCompatActivity()  {
             .load(data.imageUrl)
             .override(250,250)
             .centerCrop()
+            .transform(RoundedCorners(15))
             .into(coverImageInPost)
         songTitleInPost.text = data.songTitle
         songDetailInPost.text = data.songDetail
@@ -87,5 +89,58 @@ class InPostActivity : AppCompatActivity()  {
             seekBar1.progress=0
         }
 
+        /**
+         * COMMENT WRITE & READ
+         * 1. Comment Write
+         * 2. Comment Read
+        **/
+        val commentPost = Comment()
+        auth = FirebaseAuth.getInstance()
+        var currentUser = auth.currentUser
+        val adapter = RecyclerViewAdapter()
+        val path = data.path.toString()
+        var fireStore: FirebaseFirestore? = null
+        var userList: ArrayList<UserInfo> = ArrayList()
+        var time = System.currentTimeMillis()
+        commentButton.setOnClickListener {
+            commentPost.comment = commentEditText.text.toString()
+            commentPost.uid = currentUser?.uid
+            commentPost.timeStamp = time
+
+            adapter.fireStore?.collection("User")
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    // ArrayList 비워줌
+                    userList.clear()
+
+                    for (snapshot in querySnapshot!!.documents) {
+                        var item = snapshot.toObject<UserInfo>()
+                        userList.add(item!!)
+                    }
+                    for (i: Int in 0 until userList.size) {
+                        if(userList[i].uid == commentPost.uid) {
+                            commentPost.userId = userList[i].userName
+                        }
+                    }
+                }
+
+
+
+            adapter.fireStore?.collection("Post")?.document(path)?.collection("Comment")
+                ?.document()?.set(commentPost)
+                ?.addOnSuccessListener {
+                    Toast.makeText(this, "댓글 작성 완료", Toast.LENGTH_SHORT).show()
+                }
+                ?.addOnFailureListener { exception ->
+                    // 실패할 경우
+                    Log.w("MainActivity", "Error getting documents: $exception")
+                }
+        }
+
+
+
+        commentRecyclerView.adapter = CommentAdapter(path)
+        commentRecyclerView.layoutManager = LinearLayoutManager(this)
+
     }
+
 }
