@@ -2,24 +2,18 @@ package com.example.gclef
 
 import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.TranslateAnimation
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.list_item.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
-class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SearchAdapter(word : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var intent: Intent
     private var songList: ArrayList<Song> = ArrayList()
     private var userList: ArrayList<UserInfo> = ArrayList()
@@ -31,6 +25,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     init {  // 파이어베이스 데이터 ArrayList에 담음
         fireStore = FirebaseFirestore.getInstance()
+        Log.i("q", "list: " + word)
 
         fireStore?.collection("Post")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -38,9 +33,14 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 songList.clear()
 
                 for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject<Song>()
+                    if(snapshot.getString("songTitle")!!.contains(word)) {
+                        var item = snapshot.toObject<Song>()
+
                     songList.add(item!!)
+                        Log.i("q", "list: " + songList)
+                    }
                 }
+
 
                 notifyDataSetChanged()
             }
@@ -50,8 +50,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 userList.clear()
 
                 for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject<UserInfo>()
-                    userList.add(item!!)
+                   // if(snapshot.contains(word)) {
+                        var item = snapshot.toObject<UserInfo>()
+                        userList.add(item!!)
+                    //}
 
                 }
                 notifyDataSetChanged()
@@ -85,7 +87,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.songTitle.text = songList[position].songTitle
         viewHolder.songDetail.text = songList[position].songDetail
 
-        for (i: Int in 1 until userList.size) {
+        for (i: Int in 0 until userList.size) {
             if(userList[i].uid == songList[position].uid) {
                 viewHolder.userName.text = userList[i].userName
                 songList[position].userName = userList[i].userName
@@ -140,29 +142,4 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return songList.size
     }
 
-    fun search(searchWord: String?, option:String) {
-        fireStore?.collection("Post")
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                songList.clear()
-
-                //firestore?.collection("Post")?.document(contentUidList[position])
-                for (snapshot in querySnapshot!!.documents) {
-                    //search option이 name이면 유저정보에서, title이면 노래에서 검색
-                    if(option.equals("name")){
-                        if (snapshot.getString("usedName")!!.contains(searchWord.toString())) {
-                            var item = snapshot.toObject<UserInfo>()
-                            userList.add(item!!)
-                        }
-                    }
-
-                    if(option.equals("title")) {
-                        if (snapshot.getString("songTitle")!!.contains(searchWord.toString())){
-                            var item2 = snapshot.toObject<Song>()
-                            songList.add(item2!!)
-                        }
-                    }
-                }
-                notifyDataSetChanged()
-            }
-    }
 }

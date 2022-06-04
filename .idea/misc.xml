@@ -9,6 +9,11 @@
         <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/text_border.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_in_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1644021739130435" />
+        <entry key="app/src/main/res/layout/fragment_board.xml" value="0.1322463768115942" />
+        <entry key="app/src/main/res/layout/fragment_like.xml" value="0.15806159420289856" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1644021739130435" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.15806159420289856" />
       </map>
     </option>
   </component>

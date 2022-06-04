@@ -47,12 +47,12 @@ class BoardFragment : Fragment() {
         mediaPlayer = MediaPlayer()
         val thread = Thread()
 
-
         fireStore = FirebaseFirestore.getInstance()
         var urlList: ArrayList<String> = ArrayList()
+        var searchOptionList:ArrayList<String> = ArrayList()
         var cnt = 0
 
-        /*fireStore?.collection("Post")
+        fireStore?.collection("Post")
             ?.get()
             ?.addOnSuccessListener { result ->
                 urlList.clear()
@@ -61,15 +61,14 @@ class BoardFragment : Fragment() {
                     urlList.add(item!! as String)
 
                     activity?.let {
-                        mediaPlayer.setDataSource(it, Uri.parse(urlList[0]))
+//                        mediaPlayer.setDataSource(it, Uri.parse(urlList[0]))
 
-                        mediaPlayer.prepare()
-                        mediaPlayer.start()
+                        //mediaPlayer.prepare()
+                       // mediaPlayer.start()
                     }
 
                 }
-            }*/
-
+            }
 
         var linearLayoutManager: LinearLayoutManager
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
