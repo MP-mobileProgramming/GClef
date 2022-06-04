@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/searchbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/search_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:entries="@array/search_option"/>
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="검색어를 입력해주세요."
+            android:imeOptions="actionSearch"
+
+            android:inputType="text"/>
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색"/>
+    </LinearLayout>
+
+    <!--<androidx.appcompat.widget.SearchView
+        android:id="@+id/search_saerchview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:iconifiedByDefault="false"
+        app:queryHint="검색어를 입력하시오"/>
+        /*app:searchIcon="@drawable/ic_search"*/
+-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Search Fragment"/>
-</FrameLayout>
+        tools:listitem="@layout/list_item"/>
+
+</LinearLayout>

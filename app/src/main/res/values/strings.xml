@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">GClef</string>
+    <string-array name="search_option">
+        <item>사용자</item>
+        <item>곡 제목</item>
+    </string-array>
 </resources>
