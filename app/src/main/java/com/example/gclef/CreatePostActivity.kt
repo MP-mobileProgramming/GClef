@@ -158,12 +158,6 @@ class CreatePostActivity : AppCompatActivity() {
                 songPost.soundUrl = soundUri
 
 
-                Log.i("tag", "file name : $imgFileName")
-
-                Log.i("tag", "image url : ${songPost.imageUrl}")
-
-
-
 
                 adapter.fireStore?.collection("Post")
                     ?.document()?.set(songPost)

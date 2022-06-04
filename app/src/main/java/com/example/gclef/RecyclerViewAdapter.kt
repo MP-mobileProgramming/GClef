@@ -1,16 +1,21 @@
 package com.example.gclef
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.RoundedCorner
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.TranslateAnimation
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -39,11 +44,17 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject<Song>()
+                    if (item != null) {
+                        item.path = snapshot.id
+                    }
                     songList.add(item!!)
                 }
 
                 notifyDataSetChanged()
             }
+
+        var mPath = fireStore?.collection("Post")?.document()
+
         fireStore?.collection("User")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 // ArrayList 비워줌
@@ -64,19 +75,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         var view =
             LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
-
         return ViewHolder(view)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun putSongList(): ArrayList<Song> {
-            Log.i("q", "list: " + songList[0])
-            return songList
-        }
 
     }
 
 
+    @SuppressLint("WrongConstant")
+    @RequiresApi(31)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var viewHolder = (holder as ViewHolder).itemView
         auth = FirebaseAuth.getInstance()
@@ -84,6 +92,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         viewHolder.songTitle.text = songList[position].songTitle
         viewHolder.songDetail.text = songList[position].songDetail
+
+
+
+
 
         for (i: Int in 1 until userList.size) {
             if(userList[i].uid == songList[position].uid) {
@@ -96,30 +108,14 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             .load(songList[position].imageUrl)
             .override(250,250)
             .centerCrop()
+            .transform(RoundedCorners(15))
             .into(viewHolder.coverImage)
 
 
-        //var location = IntArray(2)
-        //var p = location[1]
         var y = 0
         val mediaPlayer = MediaPlayer()
 
 
-
-        //while(true) {
-        /*if(p - y == 3) {
-            //play
-            mediaPlayer.setDataSource(songList[y].soundUrl)
-            mediaPlayer.prepare()
-            mediaPlayer.start()
-            Log.i("q","playing : $p y: $y")
-
-        } else {
-            // next
-            mediaPlayer.stop()
-            Log.i("q","stop : $p y: $y")
-
-        }*/
 
 
         viewHolder.setOnClickListener {
@@ -129,6 +125,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 .load(songList[position].imageUrl)
                 .override(250,250)
                 .centerCrop()
+                .transform(RoundedCorners(10))
                 .into(viewHolder.coverImage)
             viewHolder.context.startActivity(intent)
 
@@ -140,29 +137,4 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return songList.size
     }
 
-    fun search(searchWord: String?, option:String) {
-        fireStore?.collection("Post")
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                songList.clear()
-
-                //firestore?.collection("Post")?.document(contentUidList[position])
-                for (snapshot in querySnapshot!!.documents) {
-                    //search option이 name이면 유저정보에서, title이면 노래에서 검색
-                    if(option.equals("name")){
-                        if (snapshot.getString("usedName")!!.contains(searchWord.toString())) {
-                            var item = snapshot.toObject<UserInfo>()
-                            userList.add(item!!)
-                        }
-                    }
-
-                    if(option.equals("title")) {
-                        if (snapshot.getString("songTitle")!!.contains(searchWord.toString())){
-                            var item2 = snapshot.toObject<Song>()
-                            songList.add(item2!!)
-                        }
-                    }
-                }
-                notifyDataSetChanged()
-            }
-    }
 }
