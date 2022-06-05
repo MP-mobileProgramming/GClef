@@ -2,6 +2,7 @@ package com.example.gclef
 
 import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -13,15 +14,16 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.list_item.*
 import java.util.ArrayList
 import kotlin.concurrent.thread
-
 
 
 class BoardFragment : Fragment() {
@@ -54,6 +56,7 @@ class BoardFragment : Fragment() {
         var cnt = 0
 
         fireStore?.collection("Post")
+            ?.orderBy("timeStamp", Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 // ArrayList 비워줌
                 songList.clear()
@@ -63,51 +66,35 @@ class BoardFragment : Fragment() {
                     songList.add(item!!)
                 }
             }
-
-
         var savedpositon = -1
         var scrollPosition = 0
-        thread(start = true){
-            while(true){
+        thread(start = true) {
+            while (true) {
                 Thread.sleep(1000)
-                Log.i("q" , "스레드 실행 중 저장위치:$savedpositon")
-                if(savedpositon != scrollPosition){
+                Log.i("q", "스레드 실행 중 저장위치:$savedpositon")
+                if (savedpositon != scrollPosition) {
                     savedpositon = scrollPosition
-                    mediaPlayer.stop()
-                    if(mediaPlayer.isPlaying){
+                    if (mediaPlayer.isPlaying) {
                         //노래 끄기
-                        mediaPlayer.stop()
-                        mediaPlayer.release()
-                    }
+                            mediaPlayer.stop()
+                        }
+                    mediaPlayer.reset()
                     context?.applicationContext?.let {
-                        mediaPlayer.setDataSource(it, Uri.parse(songList[scrollPosition].soundUrl))
+                        mediaPlayer.setDataSource(
+                            it,
+                            Uri.parse(songList[scrollPosition].soundUrl)
+                        )
                     }
                     mediaPlayer.prepare()
                     mediaPlayer.start()
-                    mediaPlayer.seekTo(100000)
+                    mediaPlayer.seekTo(songList[scrollPosition].highLightTime)
                     //새노래 켜기
-                    Log.i("q" , "노래 끄기, 켜기")
+                    Log.i("q", "노래 끄기, 켜기")
                 }
             }
         }
 
-        /*fireStore?.collection("Post")
-            ?.get()
-            ?.addOnSuccessListener { result ->
-                urlList.clear()
-                for (document in result) {  // 가져온 문서들은 result에 들어감
-                    val item = document["soundUrl"]
-                    urlList.add(item!! as String)
 
-                    activity?.let {
-                        mediaPlayer.setDataSource(it, Uri.parse(urlList[0]))
-
-                        mediaPlayer.prepare()
-                        mediaPlayer.start()
-                    }
-
-                }
-            }*/
 
 
         var linearLayoutManager: LinearLayoutManager
@@ -120,8 +107,9 @@ class BoardFragment : Fragment() {
                 scrollPosition = (recyclerView.layoutManager as LinearLayoutManager)
                     .findFirstVisibleItemPosition()
 
-                Log.i("q" , "pos: $scrollPosition")
-
+                Log.i("q", "pos: $scrollPosition")
+            }
+        })
 
         auth = FirebaseAuth.getInstance()
         var currentUser = auth.currentUser
@@ -145,20 +133,6 @@ class BoardFragment : Fragment() {
 
     }
 
-    fun Thread() {
-        val task = Runnable {
-            while (mediaPlayer.isPlaying) {
-                try {
-                    Thread.sleep(1000)
-                } catch (e: InterruptedException) {
-
-                    // TODO Auto-generated catch block
-                    e.printStackTrace()
-                }
-            }
-        }
-
-    }
 
 
 }
