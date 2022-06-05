@@ -1,11 +1,14 @@
 package com.example.gclef
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -107,6 +110,8 @@ class InPostActivity : AppCompatActivity()  {
             commentPost.uid = currentUser?.uid
             commentPost.timeStamp = time
 
+            commentEditText.text = null
+
             adapter.fireStore?.collection("User")
                 ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     // ArrayList 비워줌
@@ -137,7 +142,18 @@ class InPostActivity : AppCompatActivity()  {
         }
 
 
+        commentEditText.setOnEditorActionListener{ textView, action, event ->
+            var handled = false
 
+            if (action == EditorInfo.IME_ACTION_DONE) {
+                // 키보드 내리기
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(commentEditText.windowToken, 0)
+                handled = true
+            }
+
+            handled
+        }
         commentRecyclerView.adapter = CommentAdapter(path)
         commentRecyclerView.layoutManager = LinearLayoutManager(this)
 

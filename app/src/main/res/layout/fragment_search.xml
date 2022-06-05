@@ -14,21 +14,17 @@
         android:orientation="horizontal"
         android:background="@color/color_dark_ffffff_000000">
 
-        <Spinner
-            android:id="@+id/search_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:entries="@array/search_option"/>
         <EditText
             android:textColor="@color/color_dark_000000_ffffff"
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="검색어를 입력해주세요."
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/text_border2"
             android:textColorHint="@color/color_dark_000000_ffffff"
             android:imeOptions="actionSearch"
-
             android:inputType="text"/>
         <ImageButton
             android:layout_gravity="center"
@@ -41,14 +37,6 @@
             />
     </LinearLayout>
 
-    <!--<androidx.appcompat.widget.SearchView
-        android:id="@+id/search_saerchview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:iconifiedByDefault="false"
-        app:queryHint="검색어를 입력하시오"/>
-        /*app:searchIcon="@drawable/ic_search"*/
--->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_recyclerview"
         android:layout_width="match_parent"

@@ -9,13 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <Button
+        <ToggleButton
             android:textColor="@color/color_dark_000000_ffffff"
             android:id="@+id/goToLoginButton"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@null"
-            android:text=""
+            android:textOn="LogOut"
+            android:textOff="LogIn"
             android:textSize="30dp"
             android:padding="20dp"
             android:textAlignment="textStart"/>
