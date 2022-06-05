@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/color_dark_ffffff_000000">
 
     <LinearLayout
         android:id="@+id/searchbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/color_dark_ffffff_000000">
 
         <Spinner
             android:id="@+id/search_spinner"
@@ -18,19 +20,25 @@
             android:layout_height="match_parent"
             android:entries="@array/search_option"/>
         <EditText
+            android:textColor="@color/color_dark_000000_ffffff"
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="검색어를 입력해주세요."
+            android:textColorHint="@color/color_dark_000000_ffffff"
             android:imeOptions="actionSearch"
 
             android:inputType="text"/>
-        <Button
+        <ImageButton
+            android:layout_gravity="center"
             android:id="@+id/search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="검색"/>
+            android:tint="@color/color_dark_000000_ffffff"
+            android:src="@drawable/ic_baseline_search_24"
+            android:background="@color/color_dark_ffffff_000000"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            />
     </LinearLayout>
 
     <!--<androidx.appcompat.widget.SearchView

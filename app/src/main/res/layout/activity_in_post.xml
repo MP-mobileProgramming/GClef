@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InPostActivity"
+    android:background="@color/color_dark_ffffff_000000"
     android:orientation="vertical">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -36,6 +37,7 @@
             </FrameLayout>
 
             <TextView
+                android:textColor="@color/color_dark_000000_ffffff"
                 android:id="@+id/songTitleInPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -43,6 +45,7 @@
                 android:textSize="30dp"
                 android:layout_gravity="center"/>
             <TextView
+                android:textColor="@color/color_dark_000000_ffffff"
                 android:layout_marginTop="10dp"
                 android:id="@+id/userNameInPost"
                 android:layout_width="wrap_content"
@@ -52,6 +55,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
+                android:textColor="@color/color_dark_000000_ffffff"
                 android:id="@+id/songDetailInPost"
                 android:layout_margin="15dp"
                 android:layout_width="wrap_content"
@@ -78,6 +82,7 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"/>
                 <TextView
+                    android:textColor="@color/color_dark_000000_ffffff"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="댓글"
@@ -97,6 +102,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
     <EditText
+        android:textColor="@color/color_dark_000000_ffffff"
         android:id="@+id/commentEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

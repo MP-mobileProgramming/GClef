@@ -97,7 +97,7 @@ class CommentAdapter(path: String?) : RecyclerView.Adapter<RecyclerView.ViewHold
     /**
      *  Get Comment Time
      */
-    private object TimeMAX {
+    object TimeMAX {
         const val sec = 60
         const val min = 60
         const val hour = 24
@@ -108,18 +108,25 @@ class CommentAdapter(path: String?) : RecyclerView.Adapter<RecyclerView.ViewHold
         var time = System.currentTimeMillis()
         var diffTime = (time - regTime) / 1000
         var msg: String? = null
-        if (diffTime < TimeMAX.sec) {
-            msg = "방금 전"
-        } else if (TimeMAX.sec.let { diffTime /= it; diffTime } < TimeMAX.min) {
-            msg = diffTime.toString() + "분 전"
-        } else if (TimeMAX.min.let { diffTime /= it; diffTime } < TimeMAX.hour) {
-            msg = diffTime.toString() + "시간 전"
-        } else if (TimeMAX.hour.let { diffTime /= it; diffTime } < TimeMAX.day) {
-            msg = diffTime.toString() + "일 전"
-        } else if (TimeMAX.day.let { diffTime /= it; diffTime } < TimeMAX.month) {
-            msg = diffTime.toString() + "달 전"
-        } else {
-            msg = diffTime.toString() + "년 전"
+        when {
+            diffTime < TimeMAX.sec -> {
+                msg = "방금 전"
+            }
+            TimeMAX.sec.let { diffTime /= it; diffTime } < TimeMAX.min -> {
+                msg = diffTime.toString() + "분 전"
+            }
+            TimeMAX.min.let { diffTime /= it; diffTime } < TimeMAX.hour -> {
+                msg = diffTime.toString() + "시간 전"
+            }
+            TimeMAX.hour.let { diffTime /= it; diffTime } < TimeMAX.day -> {
+                msg = diffTime.toString() + "일 전"
+            }
+            TimeMAX.day.let { diffTime /= it; diffTime } < TimeMAX.month -> {
+                msg = diffTime.toString() + "달 전"
+            }
+            else -> {
+                msg = diffTime.toString() + "년 전"
+            }
         }
         return msg
     }

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CreatePostActivity"
+    android:background="@color/color_dark_ffffff_000000"
     android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
@@ -19,10 +20,11 @@
                 android:id="@+id/songTitlePostEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-
+                android:textColor="@color/color_dark_000000_ffffff"
                 android:hint="곡명"/>
 
             <EditText
+                android:textColor="@color/color_dark_000000_ffffff"
                 android:id="@+id/songDetailPostEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,6 +36,35 @@
                 android:scrollbars="vertical"/>
                 <!--android:background="@drawable/text_border"-->
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/selectHighlight"
+                    android:text="하이라이트 설정"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_margin="3dp"
+                    android:textColor="@color/color_dark_000000_ffffff"
+                    android:background="@drawable/button_shape1"/>
+                <Button
+                    android:id="@+id/completeHighlight"
+                    android:text="설정 완료"
+                    android:padding="3dp"
+                    android:layout_margin="3dp"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_dark_000000_ffffff"
+                    android:background="@drawable/button_shape1"/>
+            </LinearLayout>
+            <SeekBar
+                android:id="@+id/seekBarCreatePost"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>

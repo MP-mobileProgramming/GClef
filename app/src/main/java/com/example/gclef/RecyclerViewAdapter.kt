@@ -93,11 +93,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         viewHolder.songTitle.text = songList[position].songTitle
         viewHolder.songDetail.text = songList[position].songDetail
 
-
-
-
-
-        for (i: Int in 1 until userList.size) {
+        for (i: Int in 0 until userList.size) {
             if(userList[i].uid == songList[position].uid) {
                 viewHolder.userName.text = userList[i].userName
                 songList[position].userName = userList[i].userName
@@ -114,8 +110,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         var y = 0
         val mediaPlayer = MediaPlayer()
-
-
 
 
         viewHolder.setOnClickListener {

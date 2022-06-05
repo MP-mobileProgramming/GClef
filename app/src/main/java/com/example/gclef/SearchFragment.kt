@@ -37,10 +37,8 @@ class SearchFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // recycler view - 파이어베이스에 있는 정보 불러옴
-        /*recyclerView.adapter = RecyclerViewAdapter()
-        recyclerView.layoutManager = LinearLayoutManager(context?.applicationContext)
-        */mediaPlayer = MediaPlayer()
+
+        mediaPlayer = MediaPlayer()
         val thread = Thread()
 
         fireStore = FirebaseFirestore.getInstance()
@@ -48,32 +46,8 @@ class SearchFragment : Fragment() {
         var cnt = 0
         var linearLayoutManager: LinearLayoutManager
 
-        //하이라이트 자동재생기능 추가
-        /*recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                var scrollPosition = (recyclerView.layoutManager as LinearLayoutManager)
-                    .findFirstVisibleItemPosition()
-
-                Log.i("q", "pos: $scrollPosition")
-
-                if (scrollPosition == 0) {
-
-                }
-            }
-        })*/
         var optionList=resources.getStringArray(R.array.search_option)
 
-/*        spinner.onItemSelectedListener=object:
-        AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, pos: Int, p3: Long) {
-                search_option=getString(pos)
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
-*/
         auth = FirebaseAuth.getInstance()
         var currentUser = auth.currentUser
 
