@@ -8,7 +8,9 @@
         <entry key="app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/text_border.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_in_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_in_post.xml" value="0.2446334838867188" />
+        <entry key="app/src/main/res/layout/fragment_board.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.1" />
       </map>
     </option>
   </component>

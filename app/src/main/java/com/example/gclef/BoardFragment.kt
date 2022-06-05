@@ -4,6 +4,8 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +22,7 @@ import com.google.firebase.firestore.ktx.toObject
 import kotlinx.android.synthetic.main.fragment_board.*
 import kotlinx.android.synthetic.main.list_item.*
 import java.util.ArrayList
+import kotlin.concurrent.thread
 
 
 class BoardFragment : Fragment() {
@@ -49,8 +52,46 @@ class BoardFragment : Fragment() {
 
 
         fireStore = FirebaseFirestore.getInstance()
-        var urlList: ArrayList<String> = ArrayList()
+        var songList: ArrayList<Song> = ArrayList()
         var cnt = 0
+
+        fireStore?.collection("Post")
+            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                // ArrayList 비워줌
+                songList.clear()
+                for (snapshot in querySnapshot!!.documents) {
+                    var item = snapshot.toObject<Song>()
+
+                    songList.add(item!!)
+                }
+            }
+
+
+        var savedpositon = -1
+        var scrollPosition = 0
+        thread(start = true){
+            while(true){
+                Thread.sleep(1000)
+                Log.i("q" , "스레드 실행 중 저장위치:$savedpositon")
+                if(savedpositon != scrollPosition){
+                    savedpositon = scrollPosition
+                    mediaPlayer.stop()
+                    if(mediaPlayer.isPlaying){
+                        //노래 끄기
+                        mediaPlayer.stop()
+                        mediaPlayer.release()
+                    }
+                    context?.applicationContext?.let {
+                        mediaPlayer.setDataSource(it, Uri.parse(songList[scrollPosition].soundUrl))
+                    }
+                    mediaPlayer.prepare()
+                    mediaPlayer.start()
+                    mediaPlayer.seekTo(100000)
+                    //새노래 켜기
+                    Log.i("q" , "노래 끄기, 켜기")
+                }
+            }
+        }
 
         /*fireStore?.collection("Post")
             ?.get()
@@ -72,17 +113,17 @@ class BoardFragment : Fragment() {
 
 
         var linearLayoutManager: LinearLayoutManager
+
+
+
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                var scrollPosition = (recyclerView.layoutManager as LinearLayoutManager)
+                scrollPosition = (recyclerView.layoutManager as LinearLayoutManager)
                     .findFirstVisibleItemPosition()
 
                 Log.i("q" , "pos: $scrollPosition")
 
-                if (scrollPosition == 0) {
-
-                }
             }
         })
 
@@ -126,4 +167,6 @@ class BoardFragment : Fragment() {
 
 
     }
+
+
 }
