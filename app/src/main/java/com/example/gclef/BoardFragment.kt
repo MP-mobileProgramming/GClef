@@ -42,35 +42,6 @@ class BoardFragment : Fragment() {
         mediaPlayer = MediaPlayer()
         val thread = Thread()
 
-
-        var location = IntArray(2)
-        recyclerView.getLocationOnScreen(location)
-        var y = location[1]
-        Log.i("position", location[0].toString() + ", " + y.toString())
-
-        fireStore?.collection("Post")?.document()?.get()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                var song = task.result?.toObject<Song>()
-                Glide.with(this)
-                    .load(song?.imageUrl)
-                    .override(250, 250)
-                    .centerCrop()
-                    .into(coverImage)
-                /*mediaPlayer.setDataSource(song?.soundUrl)
-                if(y < 130) {
-                    mediaPlayer.prepare()
-                    mediaPlayer.start()
-                }*/
-
-            }
-        }
-
-
-
-
-
-
-
         auth = FirebaseAuth.getInstance()
         var currentUser = auth.currentUser
 
