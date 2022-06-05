@@ -9,6 +9,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.CompoundButton
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,12 +27,21 @@ class InPostActivity : AppCompatActivity()  {
     lateinit var runnable: Runnable
     private lateinit var auth: FirebaseAuth
     private var handler=Handler()
+    private var likeList = Like()
+    private var tmpList: ArrayList<Like> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_in_post)
 
         data = intent.getSerializableExtra("data") as Song
+        val adapter = RecyclerViewAdapter()
+        val path = data.path.toString()
+        var mFireStore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
+        var currentUser = auth.currentUser
+
 
         Glide.with(this)
             .load(data.imageUrl)
@@ -92,17 +102,79 @@ class InPostActivity : AppCompatActivity()  {
             seekBar1.progress=0
         }
 
+
+        /**
+         * like
+         */
+        var mPath = ""
+        likeButton.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if(likeButton.isChecked) {
+                likeList.likeUid = currentUser?.uid
+                likeList.postPath = data.path
+
+                likeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_black_24)
+                mFireStore?.collection("Like")
+                    ?.document()?.set(likeList)
+                    ?.addOnSuccessListener {
+                        Toast.makeText(this, "좋아요", Toast.LENGTH_SHORT).show()
+                    }
+                    ?.addOnFailureListener { exception ->
+                        // 실패할 경우
+                        Log.w("MainActivity", "Error getting documents: $exception")
+                    }
+
+            } else {
+                likeButton.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24)
+
+                // like 컬렉션 스냅샷
+                mFireStore?.collection("Like")
+                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                        // ArrayList 비워줌
+                        tmpList.clear()
+                        Log.i("q", "dsfsfsdfsf")
+
+                        for (snapshot in querySnapshot!!.documents) {
+                            var item = Like()
+                            if(snapshot.getString("postPath")!!.contains(data.path.toString())) {
+                                if(snapshot.getString("likeUid")!!.contains(currentUser?.uid.toString())) {
+                                    item = snapshot.toObject<Like>()!!
+                                    if (item != null) {
+                                        mPath = snapshot.id
+                                        Log.i("q", mPath)
+
+                                    }
+                                }
+                            }
+                            Log.i("q", "dsfaskdfs")
+
+                            tmpList.add(item!!)
+                        }
+                    }
+                Log.i("q", mPath)
+
+
+                mFireStore?.collection("Like")
+                    ?.document(mPath)
+                    ?.delete()
+                    ?.addOnSuccessListener {
+                        Toast.makeText(this, "좋아요 취소", Toast.LENGTH_SHORT).show()
+                    }
+                    ?.addOnFailureListener { exception ->
+                        // 실패할 경우
+                        Log.w("MainActivity", "Error getting documents: $exception")
+                    }
+
+            }
+        })
+
+
         /**
          * COMMENT WRITE & READ
          * 1. Comment Write
          * 2. Comment Read
         **/
         val commentPost = Comment()
-        auth = FirebaseAuth.getInstance()
-        var currentUser = auth.currentUser
-        val adapter = RecyclerViewAdapter()
-        val path = data.path.toString()
-        var fireStore: FirebaseFirestore? = null
+        var fireStore: FirebaseFirestore?
         var userList: ArrayList<UserInfo> = ArrayList()
         var time = System.currentTimeMillis()
         commentButton.setOnClickListener {
@@ -157,6 +229,10 @@ class InPostActivity : AppCompatActivity()  {
         commentRecyclerView.adapter = CommentAdapter(path)
         commentRecyclerView.layoutManager = LinearLayoutManager(this)
 
+    }
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.stop()
     }
 
 }

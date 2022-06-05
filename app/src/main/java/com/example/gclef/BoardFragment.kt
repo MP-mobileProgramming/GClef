@@ -31,6 +31,10 @@ class BoardFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var seekBar: SeekBar
     private lateinit var mediaPlayer: MediaPlayer
+    lateinit var runnable: Runnable
+    private var handler=Handler()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +53,7 @@ class BoardFragment : Fragment() {
 
         mediaPlayer = MediaPlayer()
         val thread = Thread()
+        var header = getLayoutInflater().inflate(R.layout.list_item, null, false);
 
 
         fireStore = FirebaseFirestore.getInstance()
@@ -62,8 +67,7 @@ class BoardFragment : Fragment() {
                 songList.clear()
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject<Song>()
-
-                    songList.add(item!!)
+                        songList.add(item!!)
                 }
             }
         var savedpositon = -1
@@ -76,7 +80,7 @@ class BoardFragment : Fragment() {
                     savedpositon = scrollPosition
                     if (mediaPlayer.isPlaying) {
                         //노래 끄기
-                            mediaPlayer.stop()
+                        mediaPlayer.stop()
                         }
                     mediaPlayer.reset()
                     context?.applicationContext?.let {
@@ -88,13 +92,12 @@ class BoardFragment : Fragment() {
                     mediaPlayer.prepare()
                     mediaPlayer.start()
                     mediaPlayer.seekTo(songList[scrollPosition].highLightTime)
+
                     //새노래 켜기
                     Log.i("q", "노래 끄기, 켜기")
                 }
             }
         }
-
-
 
 
         var linearLayoutManager: LinearLayoutManager
@@ -131,6 +134,11 @@ class BoardFragment : Fragment() {
 
 
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mediaPlayer.stop()
     }
 
 

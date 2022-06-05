@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_dark_ffffff_000000"
-    >
-    <TextView
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/color_dark_ffffff_000000">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/like_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Like Fragment"/>
+        tools:listitem="@layout/list_item"/>
+
 
 </FrameLayout>
