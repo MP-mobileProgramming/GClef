@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:background="@color/color_dark_ffffff_000000">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/searchbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/color_dark_ffffff_000000">
+
+        <EditText
+            android:textColor="@color/color_dark_000000_ffffff"
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:hint="검색어를 입력해주세요."
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/text_border2"
+            android:textColorHint="@color/color_dark_000000_ffffff"
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
+        <ImageButton
+            android:layout_gravity="center"
+            android:id="@+id/search_btn"
+            android:tint="@color/color_dark_000000_ffffff"
+            android:src="@drawable/ic_baseline_search_24"
+            android:background="@color/color_dark_ffffff_000000"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Search Fragment"/>
-</FrameLayout>
+        tools:listitem="@layout/list_item"/>
+
+</LinearLayout>

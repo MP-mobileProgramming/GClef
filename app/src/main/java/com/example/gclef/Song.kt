@@ -9,6 +9,9 @@ data class Song(var userName : String? = null,
                 var songDetail : String? = null,
                 var imageUrl : String? = null,
                 var soundUrl : String? = null,
+                var path : String? = null,
+                var timeStamp: Long = 1,
+                var highLightTime: Int = 0,
                 var uid : String? = null) : Serializable {
 
                 }

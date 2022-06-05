@@ -2,7 +2,6 @@ package com.example.gclef
 
 import android.content.Intent
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -14,7 +13,6 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,12 +23,12 @@ import java.util.ArrayList
 import kotlin.concurrent.thread
 
 
+
 class BoardFragment : Fragment() {
     private var fireStore: FirebaseFirestore? = null
     private lateinit var auth: FirebaseAuth
     private lateinit var seekBar: SeekBar
     private lateinit var mediaPlayer: MediaPlayer
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,47 +122,41 @@ class BoardFragment : Fragment() {
 
                 Log.i("q" , "pos: $scrollPosition")
 
+
+        auth = FirebaseAuth.getInstance()
+        var currentUser = auth.currentUser
+
+        // Create a post - 글쓰기 누르면 - CreatePostActivity 로 이동
+        fab.setOnClickListener {
+            if(currentUser?.uid != null) {
+                //로그인 상태
+                val postIntent =
+                    Intent(context?.applicationContext, CreatePostActivity::class.java)
+                startActivity(postIntent)
+                Toast.makeText(context, "클릭", Toast.LENGTH_LONG).show()
             }
-        })
-
-
-
-
-                auth = FirebaseAuth.getInstance()
-                var currentUser = auth.currentUser
-
-                // Create a post - 글쓰기 누르면 - CreatePostActivity 로 이동
-                fab.setOnClickListener {
-                    if (currentUser?.uid != null) {
-                        //로그인 상태
-                        val postIntent =
-                            Intent(context?.applicationContext, CreatePostActivity::class.java)
-                        startActivity(postIntent)
-                        Toast.makeText(context, "클릭", Toast.LENGTH_LONG).show()
-                    } else {
-                        // 로그아웃 상태
-                        Toast.makeText(context, "로그인이 필요합니다", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-
-
-
-        fun Thread() {
-            val task = Runnable {
-                while (mediaPlayer.isPlaying) {
-                    try {
-                        Thread.sleep(1000)
-                    } catch (e: InterruptedException) {
-
-                        // TODO Auto-generated catch block
-                        e.printStackTrace()
-                    }
-                }
+            else {
+                // 로그아웃 상태
+                Toast.makeText(context, "로그인이 필요합니다", Toast.LENGTH_LONG).show()
             }
-
         }
 
+
+
+    }
+
+    fun Thread() {
+        val task = Runnable {
+            while (mediaPlayer.isPlaying) {
+                try {
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+
+                    // TODO Auto-generated catch block
+                    e.printStackTrace()
+                }
+            }
+        }
 
     }
 

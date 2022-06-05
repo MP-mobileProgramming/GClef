@@ -17,6 +17,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // 로그인
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -34,6 +35,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
+        //회원가입 창으로 이동
         goToSignUpButton.setOnClickListener {
             val signUpIntent = Intent(this, SignUpActivity::class.java)
             startActivity(signUpIntent)
